@@ -6,33 +6,34 @@ import TrackersBoard from "./TrackersBoard/TrackersBoard";
 export default function Page() {
   const [transactions, setTransactions] = useState([]);
   const [selectedType, setSelectedType] = useState("Expense");
+  const [taskToUpdate, setTaskToUpdate] = useState(null);
 
-  const addTransaction = transaction => {
-    setTransactions([...transactions, transaction]);
+  const addTransaction = (newTransaction, isAdd) => {
+    if (isAdd) {
+      setTransactions([...transactions, newTransaction]);
+    } else {
+      setTransactions(
+        transactions.map(txn => {
+          if (txn.id === newTransaction.id) {
+            return newTransaction;
+          } else {
+            return txn;
+          }
+        })
+      );
+    }
   };
 
-  const updateTransaction = updatedTransaction => {
+  const handleEditTxn = newTxn => {
+    setTaskToUpdate(newTxn);
     setTransactions(
-      transactions.map(txn =>
-        txn.id === updatedTransaction.id ? updatedTransaction : txn
-      )
+      transactions.map(txn => (txn.id === newTxn.id ? newTxn : txn))
     );
   };
 
   const deleteTransaction = id => {
     setTransactions(transactions.filter(txn => txn.id !== id));
   };
-
-  const summary = transactions.reduce(
-    (acc, txn) => {
-      if (txn.type === "Income") acc.income += txn.amount;
-      else acc.expense += txn.amount;
-
-      acc.balance = acc.income - acc.expense;
-      return acc;
-    },
-    { income: 0, expense: 0, balance: 0 }
-  );
 
   return (
     <>
@@ -43,12 +44,12 @@ export default function Page() {
             addTransaction={addTransaction}
             selectedType={selectedType}
             setSelectedType={setSelectedType}
+            taskToUpdate={taskToUpdate}
           />
           <TrackersBoard
             transactions={transactions}
-            updateTransaction={updateTransaction}
+            handleEditTxn={handleEditTxn}
             deleteTransaction={deleteTransaction}
-            summary={summary}
           />
         </section>
       </main>

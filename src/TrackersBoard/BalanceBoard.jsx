@@ -1,29 +1,30 @@
-export default function BalanceBoard() {
-  // const { balance, income, expense } = summary;
-  // const balanceStyle = balance < 0 ? { color: "red" } : {};
+import BalanceType from "../utility/balanceType";
+
+/* eslint-disable react/prop-types */
+export default function BalanceBoard({ transactions }) {
+  const { income, expense, balance } = transactions.reduce(
+    (acc, txn) => {
+      if (txn.type === "Income") acc.income += txn.amount;
+      else acc.expense += txn.amount;
+
+      acc.balance = acc.income - acc.expense;
+      return acc;
+    },
+    { income: 0, expense: 0, balance: 0 }
+  );
+  // const colors =
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl">
         <dl className="grid grid-cols-1 text-center lg:grid-cols-3 divide-x-2 border rounded-md overflow-hidden">
-          <div className="bg-[#F9FAFB] flex lg:max-w-xs flex-col px-4 py-4">
-            <dt className="text-base leading-7 text-gray-600">Balance</dt>
-            <dd className="order-first text-xl font-semibold tracking-tight text-gray-700 sm:text-3xl">
-              BDT
-            </dd>
-          </div>
-          <div className="bg-[#F9FAFB] flex lg:max-w-xs flex-col px-4 py-4">
-            <dt className="text-base leading-7 text-gray-600">Total Income</dt>
-            <dd className="order-first text-xl font-semibold tracking-tight text-gray-700 sm:text-3xl">
-              BDT
-            </dd>
-          </div>
-          <div className="bg-[#F9FAFB] flex lg:max-w-xs flex-col px-4 py-4">
-            <dt className="text-base leading-7 text-gray-600">Total Expense</dt>
-            <dd className="order-first text-xl font-semibold tracking-tight text-gray-700 sm:text-3xl">
-              BDT
-            </dd>
-          </div>
+          <BalanceType
+            type={balance}
+            value="Balance"
+            color={balance < 0 ? "text-red-600" : ""}
+          />
+          <BalanceType type={income} value="Total Income" />
+          <BalanceType type={expense} value="Total Expense" />
         </dl>
       </div>
     </div>

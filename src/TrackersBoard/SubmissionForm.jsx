@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 
 const categories = {
@@ -18,17 +19,22 @@ export default function SubmissionForm({
   addTransaction,
   selectedType,
   setSelectedType,
+  taskToUpdate,
 }) {
-  const [formData, setFormData] = useState({
-    type: selectedType,
-    category: "",
-    amount: "",
-    date: "",
-  });
+  const [formData, setFormData] = useState(
+    taskToUpdate || {
+      type: selectedType,
+      category: "",
+      amount: "",
+      date: "",
+    }
+  );
+
+  const [isAdd, setIsAdd] = useState(Object.is(taskToUpdate, null));
 
   const handleTypeChange = type => {
     setSelectedType(type);
-    setFormData({ ...formData, type, category: "" }); // Reset category when type changes
+    setFormData({ ...formData, type, category: "" });
   };
 
   const handleFormChange = e => {
@@ -45,9 +51,8 @@ export default function SubmissionForm({
       id: Date.now(),
       amount: parseFloat(formData.amount),
     };
-    addTransaction(newTransaction);
+    addTransaction(newTransaction, isAdd);
 
-    // Reset form data
     setFormData({ type: selectedType, category: "", amount: "", date: "" });
   };
   return (
@@ -61,13 +66,17 @@ export default function SubmissionForm({
           <div className="flex divide-x divide-slate-400/20 overflow-hidden rounded-md bg-white text-[0.8125rem] font-medium leading-5 text-slate-700 shadow-sm ring-1 ring-slate-700/10 mt-6">
             <button
               type="button"
-              className="cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900 active"
+              className={`cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900 ${
+                selectedType === "Expense" ? "active" : ""
+              }`}
               onClick={() => handleTypeChange("Expense")}
             >
               Expense
             </button>
             <button
-              className="cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900"
+              className={`cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900 ${
+                selectedType === "Income" ? "active" : ""
+              }`}
               onClick={() => handleTypeChange("Income")}
             >
               Income
@@ -149,7 +158,7 @@ export default function SubmissionForm({
             type="submit"
             className="mt-6 rounded-md bg-teal-600 px-8 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 w-full"
           >
-            Save
+            {isAdd ? "Edit" : "Save"}
           </button>
         </form>
       </div>
