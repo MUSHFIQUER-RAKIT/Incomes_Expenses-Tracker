@@ -16,14 +16,15 @@ const categories = {
 };
 
 export default function SubmissionForm({
-  addTransaction,
   selectedType,
   setSelectedType,
+  onSave,
   taskToUpdate,
 }) {
   const [formData, setFormData] = useState(
     taskToUpdate || {
       type: selectedType,
+      id: crypto.randomUUID(),
       category: "",
       amount: "",
       date: "",
@@ -48,12 +49,11 @@ export default function SubmissionForm({
 
     const newTransaction = {
       ...formData,
-      id: Date.now(),
       amount: parseFloat(formData.amount),
     };
-    addTransaction(newTransaction, isAdd);
 
     setFormData({ type: selectedType, category: "", amount: "", date: "" });
+    onSave(newTransaction, isAdd);
   };
   return (
     <>

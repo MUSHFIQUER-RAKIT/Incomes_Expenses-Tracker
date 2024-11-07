@@ -2,7 +2,11 @@
 import BalanceBoard from "./BalanceBoard";
 import BalanceList from "./BalanceList";
 
-export default function TrackersBoard({ transactions, handleEditTxn, deleteTransaction }) {
+export default function TrackersBoard({
+  transactions,
+  onEdit,
+  deleteTransaction,
+}) {
   const incomeTransactions = transactions.filter(txn => txn.type === "Income");
   const expenseTransactions = transactions.filter(
     txn => txn.type === "Expense"
@@ -17,13 +21,13 @@ export default function TrackersBoard({ transactions, handleEditTxn, deleteTrans
             <BalanceList
               transactions={incomeTransactions}
               type="Income"
-              onUpdate={handleEditTxn}
+              onEdit={onEdit}
               deleteTransaction={deleteTransaction}
             />
             <BalanceList
               transactions={expenseTransactions}
               type="Expense"
-              onUpdate={handleEditTxn}
+              onEdit={onEdit}
               deleteTransaction={deleteTransaction}
             />
           </div>

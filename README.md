@@ -1,4 +1,4 @@
-# React + Vite
+# Assignment 3
 
 এসাইনমেন্ট এ আপনাকে যা যা করতে হবেঃ ✓ বাম পাশের "Expense Tracker" ফর্ম ফিল-আপ
 করে সাবমিট করলে, Expense অথবা Income এর উপরে ভিত্তি করে ডানপাশের লিস্ট ভিউ এবং
@@ -42,8 +42,3 @@ $${\color{green}---Done}$$
 
 ✓ ট্রান্সেকশন Edit বা Delete করলে, ব্যালেন্স সামারি এর ব্যালেন্স গুলো যথাযত
 আপডেট হয়ে যাবে । $${\color{green}---Done}$$
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
-  uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
-  uses [SWC](https://swc.rs/) for Fast Refresh
